@@ -1,16 +1,12 @@
-import { faker } from '@faker-js/faker';
 import { UserEntity, UserProps } from '../../user.entity';
+import { UserDataBuilder } from '../testing/helpers/user-data-builder';
 
 describe('UserEntity unit tests', () => {
     let props: UserProps;
     let sut: UserEntity;
 
     beforeEach(() => {
-        props = {
-            name: faker.person.fullName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-        };
+        props = UserDataBuilder({});
         sut = new UserEntity(props);
     });
 
@@ -45,11 +41,7 @@ describe('UserEntity unit tests', () => {
     });
 
     it('Should create a new user with createdAt date if not provided', () => {
-        const customProps: UserProps = {
-            name: faker.person.fullName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-        };
+        const customProps = UserDataBuilder({});
         const user = new UserEntity(customProps);
 
         expect(user.createdAt).toBeInstanceOf(Date);
@@ -57,12 +49,7 @@ describe('UserEntity unit tests', () => {
 
     it('Should create a new user with provided createdAt date', () => {
         const customDate = new Date('2023-01-01');
-        const customProps: UserProps = {
-            name: faker.person.fullName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-            createdAt: customDate,
-        };
+        const customProps = UserDataBuilder({ createdAt: customDate });
         const user = new UserEntity(customProps);
 
         expect(user.createdAt).toEqual(customDate);
